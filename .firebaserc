@@ -1,0 +1,5 @@
+{
+  "projects": {
+    "default": "ccd-datastore-vs-firestore"
+  }
+}
