@@ -1,5 +1,14 @@
 {
   "projects": {
     "default": "ccd-datastore-vs-firestore"
+  },
+  "targets": {
+    "ccd-datastore-vs-firestore": {
+      "hosting": {
+        "angular-datastore-vs-firestore": [
+          "ccd-datastore-vs-firestore"
+        ]
+      }
+    }
   }
 }

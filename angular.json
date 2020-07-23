@@ -119,6 +119,10 @@
               "devServerTarget": "angular-datastore-vs-firestore:serve:production"
             }
           }
+        },
+        "deploy": {
+          "builder": "@angular/fire:deploy",
+          "options": {}
         }
       }
     }
