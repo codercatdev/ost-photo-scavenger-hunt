@@ -3,17 +3,18 @@
     main;
     context: {
       isHandset: isHandset$ | async,
-      loading: loading$ | async
+      loading: loading$ | async,
+      expressions: expressions$ | async
     }
   "
 ></ng-container>
-<ng-template #main let-isHandset="isHandset" let-loading="loading">
+<ng-template #main let-isHandset="isHandset" let-loading="loading" let-expressions="expressions">
   <div fxLayout="row wrap" fxLayoutAlign="start center">
     <div fxFlex="100" fxLayout="row wrap" fxLayoutAlign="start center">
       <video autoplay muted #video [fxFlex]="isHandset ? 100 : 50"></video>
       <div fxLayout="column" fxLayoutAlign="start center">
-      <app-firestore></app-firestore>
-      <app-datastore></app-datastore>
+      <app-firestore [expressions$]="expressions$"></app-firestore>
+      <app-datastore [expressions$]="expressions$"></app-datastore>
       </div>
     </div>
     <mat-card [fxFlex]="isHandset ? 100 : 50" *ngIf="!loading">
@@ -28,7 +29,7 @@
       </mat-card-header>
       <mat-card-content>
         <mat-list role="list">
-          <mat-list-item *ngFor="let expression of expressions | async" role="listitem">
+          <mat-list-item *ngFor="let expression of expressions" role="listitem">
             <button mat-raised-button color="accent" style="width: 100%;">
               {{ expression }}
             </button>

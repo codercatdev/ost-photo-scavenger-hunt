@@ -1,1 +1,4 @@
 <p>datastore works!</p>
+<div *ngFor="let expression of expressions$ | async">
+  {{expression}}
+</div>

@@ -20,8 +20,6 @@ export class CapturesComponent implements AfterViewInit, OnDestroy {
   private DEFAULT_VIDEO_OPTIONS: MediaTrackConstraints = { facingMode: 'environment' };
 
   @ViewChild('video') video: ElementRef;
-  @Output() expressions = new BehaviorSubject([]);
-
   videoOptions: MediaTrackConstraints = this.DEFAULT_VIDEO_OPTIONS;
   public mirrorImage: string | WebcamMirrorProperties;
   public availableVideoInputs: MediaDeviceInfo[] = [];
@@ -37,6 +35,7 @@ export class CapturesComponent implements AfterViewInit, OnDestroy {
 
   model: any;
   predictions: any;
+  expressions$ = new BehaviorSubject([]);
   inputs$: Observable<MediaDeviceInfo[]>;
   loading$ = new BehaviorSubject<boolean>(true);
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
@@ -175,7 +174,7 @@ export class CapturesComponent implements AfterViewInit, OnDestroy {
               this.video.nativeElement, new faceapi.SsdMobilenetv1Options({minConfidence: this._MINCONF}))
               .withFaceExpressions();
             this.loading$.next(false);
-            this.expressions.next(result
+            this.expressions$.next(result
               .map((r) => {
                 if (r.detection.score > this._MINCONF) {
                   return Object.keys(r.expressions).reduce((a, b) =>
