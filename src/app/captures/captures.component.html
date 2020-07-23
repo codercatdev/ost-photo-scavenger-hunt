@@ -1,0 +1,43 @@
+<ng-container
+  *ngTemplateOutlet="
+    main;
+    context: {
+      isHandset: isHandset$ | async,
+      loading: loading$ | async
+    }
+  "
+></ng-container>
+<ng-template #main let-isHandset="isHandset" let-loading="loading">
+  <div fxLayout="row wrap" fxLayoutAlign="start center">
+    <div fxFlex="100" fxLayout="row wrap" fxLayoutAlign="start center">
+      <video autoplay muted #video [fxFlex]="isHandset ? 100 : 50"></video>
+      <div fxLayout="column" fxLayoutAlign="start center">
+      <app-firestore></app-firestore>
+      <app-datastore></app-datastore>
+      </div>
+    </div>
+    <mat-card [fxFlex]="isHandset ? 100 : 50" *ngIf="!loading">
+      <mat-card-header>
+        <mat-card-title fxLayout="row" fxLayoutAlign="start center">
+          <div fxFlex="initial">Change Camera</div>
+          <div fxFlex="auto"></div>
+          <button mat-icon-button (click)="rotateVideoInput(true)">
+            <mat-icon>switch_video</mat-icon>
+          </button>
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <mat-list role="list">
+          <mat-list-item *ngFor="let expression of expressions | async" role="listitem">
+            <button mat-raised-button color="accent" style="width: 100%;">
+              {{ expression }}
+            </button>
+          </mat-list-item>
+        </mat-list>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  <div fxLayout="row" fxLayoutAlign="center center" *ngIf="loading">
+    <mat-spinner></mat-spinner>
+  </div>
+</ng-template>
