@@ -1,3 +1,4 @@
+import { FacesModule } from './../faces/faces.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FirestoreComponent } from './firestore.component';
@@ -7,7 +8,8 @@ import { FirestoreComponent } from './firestore.component';
 @NgModule({
   declarations: [FirestoreComponent],
   imports: [
-    CommonModule
+    CommonModule,
+    FacesModule,
   ],
   exports: [FirestoreComponent]
 })

@@ -1,4 +1,8 @@
-<p>firestore works!</p>
-<div *ngFor="let expression of expressions$ | async">
-  {{expression}}
-</div>
+<h1>Firestore Results</h1>
+<app-faces
+  [happy]="happy$ | async"
+  [sad]="sad$ | async"
+  [neutral]="neutral$ | async"
+  [surprised]="surprised$ | async"
+  [angry]="angry$ | async"
+  ></app-faces>
