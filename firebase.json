@@ -5,8 +5,8 @@
   },
   "hosting": [
     {
-      "target": "angular-datastore-vs-firestore",
-      "public": "dist/angular-datastore-vs-firestore",
+      "target": "ost-photo-scavenger-hunt",
+      "public": "dist/ost-photo-scavenger-hunt",
       "ignore": [
         "**/.*"
       ],

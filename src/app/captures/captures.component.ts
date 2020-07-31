@@ -1,7 +1,4 @@
 import { Component, OnInit, ViewChild, ElementRef, AfterViewInit, OnDestroy, Output } from '@angular/core';
-// import * as mobilenet from '@tensorflow-models/mobilenet';
-// import * as tf from '@tensorflow/tfjs';
-import * as faceapi from 'face-api.js';
 import { Observable, BehaviorSubject, from, Subscription } from 'rxjs';
 import { Breakpoints, BreakpointObserver } from '@angular/cdk/layout';
 import { map, shareReplay } from 'rxjs/operators';
@@ -164,24 +161,10 @@ export class CapturesComponent implements AfterViewInit, OnDestroy {
           vid.srcObject = stream;
           vid.play();
 
-          const MODEL_URL = '/assets/models/';
-          await faceapi.loadSsdMobilenetv1Model(MODEL_URL);
-          // await faceapi.loadFaceLandmarkModel(MODEL_URL);
-          await faceapi.loadFaceExpressionModel(MODEL_URL);
-
           setInterval(async () => {
-            const result = await faceapi.detectAllFaces(
-              this.video.nativeElement, new faceapi.SsdMobilenetv1Options({minConfidence: this._MINCONF}))
-              .withFaceExpressions();
+
             this.loading$.next(false);
-            this.expressions$.next(result
-              .map((r) => {
-                if (r.detection.score > this._MINCONF) {
-                  return Object.keys(r.expressions).reduce((a, b) =>
-                    r.expressions[a] > r.expressions[b] ? a : b
-                  );
-                }
-              }));
+            // Store Face maybe?
           }, 500);
 
           this.activeVideoSettings = stream.getVideoTracks()[0].getSettings();

@@ -4,8 +4,18 @@ service cloud.firestore {
     match /{document=**} {
       allow read, write: if false;
 
-      match /rooms/{roomId} {
-        allow read;
+      match /activities/{activityId} {
+        allow read: if true;
+      }
+
+      match /users/{userId} {
+        allow read, update, delete: if request.auth.uid == userId;
+        allow create: if request.auth.uid != null;
+      }
+
+      match /teams/{roomId} {
+        allow read: if true;
+        allow create: if request.auth.uid != null;
 
         match /users/{userId} {
           allow read: if true;

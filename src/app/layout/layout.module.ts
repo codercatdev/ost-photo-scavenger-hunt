@@ -9,6 +9,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { NgxAuthFirebaseUIModule } from 'ngx-auth-firebaseui';
 
 
 @NgModule({
@@ -23,6 +24,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     MatIconModule,
     MatListModule,
     FlexLayoutModule,
+    NgxAuthFirebaseUIModule,
   ],
   exports: [NavComponent]
 })

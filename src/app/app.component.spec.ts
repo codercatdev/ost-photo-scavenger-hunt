@@ -20,16 +20,16 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have as title 'angular-datastore-vs-firestore'`, () => {
+  it(`should have as title 'ost-photo-scavenger-hunt'`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('angular-datastore-vs-firestore');
+    expect(app.title).toEqual('ost-photo-scavenger-hunt');
   });
 
   it('should render title', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement;
-    expect(compiled.querySelector('.content span').textContent).toContain('angular-datastore-vs-firestore app is running!');
+    expect(compiled.querySelector('.content span').textContent).toContain('ost-photo-scavenger-hunt app is running!');
   });
 });

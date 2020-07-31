@@ -10,7 +10,7 @@ describe('workspace-project App', () => {
 
   it('should display welcome message', () => {
     page.navigateTo();
-    expect(page.getTitleText()).toEqual('angular-datastore-vs-firestore app is running!');
+    expect(page.getTitleText()).toEqual('ost-photo-scavenger-hunt app is running!');
   });
 
   afterEach(async () => {
