@@ -1,5 +1,14 @@
 {
   "projects": {
     "default": "ost-photo-scavenger-hunt"
+  },
+  "targets": {
+    "ost-photo-scavenger-hunt": {
+      "hosting": {
+        "ost-photo-scavenger-hunt": [
+          "ost-photo-scavenger-hunt"
+        ]
+      }
+    }
   }
 }
