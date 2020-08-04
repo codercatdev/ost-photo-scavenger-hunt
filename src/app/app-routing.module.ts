@@ -1,7 +1,6 @@
-import { HomeModule } from './home/home.module';
+import { SignedInGuard } from './guards/signed-in.guard';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { LoggedInGuard } from 'ngx-auth-firebaseui';
 
 
 const routes: Routes = [
@@ -13,7 +12,7 @@ const routes: Routes = [
 {
   path: 'home',
   loadChildren: () => import('./home/home.module').then(m => m.HomeModule),
-  canActivate: [LoggedInGuard]
+  canActivateChild: [SignedInGuard]
 },
 {
   path: 'user',
@@ -21,7 +20,8 @@ const routes: Routes = [
 },
 {
   path: 'team/:id',
-  loadChildren: () => import('./captures/captures.module').then(m => m.CapturesModule),
+  loadChildren: () => import('./team/team.module').then(m => m.TeamModule),
+  canActivateChild: [SignedInGuard]
 },
 {
   path: '**',
@@ -30,7 +30,9 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes,
+    // {enableTracing: true}
+    )],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

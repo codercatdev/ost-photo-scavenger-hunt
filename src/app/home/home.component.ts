@@ -25,8 +25,6 @@ export class HomeComponent implements OnInit {
       const id = a.payload.doc.id;
       return { id, ...data};
     })));
-
-    this.firestore.collection('activities').valueChanges().subscribe(c => console.log(c));
   }
   addTeaam(name: string): void{
     this.teamsRef.add({name});

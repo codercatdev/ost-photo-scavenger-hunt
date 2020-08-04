@@ -690,7 +690,11 @@ export const loadActivities = functions.https.onCall(async (data, context) => {
 
   const promises: any[] = [];
   activities.forEach((activity) => {
-    promises.push(admin.firestore().collection('activities').add(activity));
+    const search = activity.activity.toLowerCase().split(' ')
+    promises.push(admin.firestore().collection('activities').add({
+      ...activity,
+      search
+    }));
   });
   return Promise.all(promises);
 });

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthProvider } from 'ngx-auth-firebaseui';
 import { Router } from '@angular/router';
+import { AngularFireAuth } from '@angular/fire/auth';
 
 @Component({
   selector: 'app-signin',
@@ -8,11 +9,10 @@ import { Router } from '@angular/router';
   styles: []
 })
 export class SigninComponent implements OnInit {
-  providers = [AuthProvider.Google];
-  constructor(private router: Router) { }
+  providers = [AuthProvider.Google, AuthProvider.Microsoft];
+  constructor(private router: Router, private fireAuth: AngularFireAuth) { }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
   onCreateAccountRequested(): void{
     this.router.navigate(['/user/register']);
   }
