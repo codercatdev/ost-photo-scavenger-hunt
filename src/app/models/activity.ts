@@ -1,4 +1,3 @@
-import { Activity } from './activity';
 export interface Activity {
   id?: string;
   activity: string;

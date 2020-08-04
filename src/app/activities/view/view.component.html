@@ -1,16 +1,8 @@
-<ng-container *ngTemplateOutlet="
-    main;
-    context: {
-      uploading: uploading$ | async
-    }
-  "></ng-container>
-<ng-template #main let-uploading="uploading">
-  <div fxLayout="row wrap" fxLayoutAlign="center">
-    <mat-card fxFlex="50">
-      <img mat-card-image [src]="data?.activity?.submitted?.downloadURL">
+<div fxLayout="row wrap" fxLayoutAlign="center">
+  <mat-card fxFlex="50">
+    <img mat-card-image [src]="data?.activity?.submitted?.downloadURL">
     <mat-card-actions>
       <button mat-raised-button color="warn" (click)="delete()">Delete</button>
     </mat-card-actions>
-    </mat-card>
-  </div>
-</ng-template>
+  </mat-card>
+</div>
