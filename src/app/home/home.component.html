@@ -27,7 +27,7 @@
         <mat-card *ngFor="let team of myTeams" fxLayout="column" style="margin: 10px; width: 300px; height: 300px;overflow: hidden;">
           <mat-card-title-group>
           <mat-card-title [routerLink]="['/team', team.id]" style="cursor: pointer;">
-            {{team?.name | titlecase}}
+            {{team?.name}}
           </mat-card-title>
           <mat-card-subtitle *ngIf="team?.totalPoints">
             Points: {{team?.totalPoints}}
@@ -43,7 +43,7 @@
       <div fxLayout="row wrap" fxLayoutAlign="center center" *ngIf="teams">
         <mat-card *ngFor="let team of teams" fxLayout="column" style="margin: 10px; width: 300px; height: 300px;overflow: hidden;">
           <mat-card-title [routerLink]="['/team', team.id]" style="cursor: pointer;">
-            {{team?.name | titlecase}}
+            {{team?.name}}
           </mat-card-title>
           <mat-card-content style="overflow-y: auto;">
             <app-team-users [team]="team"></app-team-users>
