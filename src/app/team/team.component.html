@@ -5,8 +5,10 @@
     }
   "></ng-container>
 <ng-template #main let-team="team" let-users="users" let-addMe="addMe" let-me="me">
-  <mat-toolbar>
+  <mat-toolbar fxLayout="row">
     <h1>Team Name: {{team?.name}}</h1>
+    <div fxFlex="grow"></div>
+    <h2>Points: {{team?.totalPoints || 0}}</h2>
   </mat-toolbar>
   <div *ngIf="team">
     <app-team-users [team]="team" fxLayout="row wrap"></app-team-users>
