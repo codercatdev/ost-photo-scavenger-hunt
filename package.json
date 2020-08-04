@@ -7,7 +7,8 @@
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "emulator": "npm run build --prefix functions && firebase emulators:start --import=./.firebase/firestore --export-on-exit"
   },
   "private": true,
   "dependencies": {
