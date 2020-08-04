@@ -17,7 +17,7 @@ service cloud.firestore {
       match /teams/{roomId} {
         allow read: if true;
         allow create: if request.auth.uid != null;
-        allow update: if request.auth.uid != null && request.data.points == null;
+        allow update: if request.auth.uid != null && (!("totalPoints" in request.resource.data) || request.resource.data.totalPoints == resource.data.totalPoints);
         allow delete: if request.auth.uid == resource.data.createdBy;
       }
       match /status/{userId} {

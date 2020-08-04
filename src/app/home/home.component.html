@@ -25,9 +25,14 @@
     <mat-tab label="My Teams">
       <div fxLayout="row wrap" fxLayoutAlign="center center" *ngIf="myTeams">
         <mat-card *ngFor="let team of myTeams" fxLayout="column" style="margin: 10px; width: 300px; height: 300px;overflow: hidden;">
+          <mat-card-title-group>
           <mat-card-title [routerLink]="['/team', team.id]" style="cursor: pointer;">
             {{team?.name | titlecase}}
           </mat-card-title>
+          <mat-card-subtitle *ngIf="team?.totalPoints">
+            Points: {{team?.totalPoints}}
+          </mat-card-subtitle>
+          </mat-card-title-group>
           <mat-card-content style="overflow-y: auto;">
             <app-team-users [team]="team" fxLayout="column" fxLayoutAlign="stretch"></app-team-users>
           </mat-card-content>
