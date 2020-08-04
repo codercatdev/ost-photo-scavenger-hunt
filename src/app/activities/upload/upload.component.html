@@ -1,0 +1,38 @@
+<ng-container
+  *ngTemplateOutlet="
+    main;
+    context: {
+      uploading: uploading$ | async
+    }
+  "
+></ng-container>
+<ng-template #main let-uploading="uploading">
+<div fxLayout="row wrap" fxLayoutAlign="center">
+  <mat-card fxFlex="50" *ngFor="let file of files">
+    <img mat-card-image [src]="file?.imgURL">
+    <mat-card-content>
+      <mat-progress-bar [value]="file?.data?.progress | async" *ngIf="file?.data?.inProgress"></mat-progress-bar>
+      <div *ngIf="file?.data?.downloadURL | async as downloadURL; else showFileName">
+        <a [href]="downloadURL" target="_blank">{{downloadURL}}</a>
+      </div>
+      <ng-template #showFileName>
+      <span id="file-label">
+        {{file?.data?.name}}
+      </span>
+      </ng-template>
+    </mat-card-content>
+  </mat-card>
+  <button fxFlex="100" mat-button color="accent" (click)="onClick()" style="margin: 20px 0 0 0;" *ngIf="!uploading; else closeDialog">
+    <mat-icon>file_upload</mat-icon>
+    Upload
+  </button>
+  <ng-template #closeDialog>
+    <button fxFlex="100" mat-button color="accent" (click)="close()" style="margin: 20px 0 0 0;">
+      <mat-icon>close</mat-icon>
+      Close
+    </button>
+  </ng-template>
+  <input type="file" #fileInput id="fileUpload" name="fileUpload" multiple="multiple" accept="image/*"
+    style="display:none;" />
+</div>
+</ng-template>

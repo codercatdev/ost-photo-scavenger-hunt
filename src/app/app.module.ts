@@ -12,6 +12,8 @@ import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { AngularFireDatabaseModule } from '@angular/fire/database';
 import { AngularFireFunctionsModule } from '@angular/fire/functions';
+import { AngularFireStorageModule } from '@angular/fire/storage';
+
 import { NgxAuthFirebaseUIModule } from 'ngx-auth-firebaseui';
 
 @NgModule({
@@ -31,7 +33,8 @@ import { NgxAuthFirebaseUIModule } from 'ngx-auth-firebaseui';
     AngularFirestoreModule,
     AngularFireAuthModule,
     AngularFireDatabaseModule,
-    AngularFireFunctionsModule
+    AngularFireFunctionsModule,
+    AngularFireStorageModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

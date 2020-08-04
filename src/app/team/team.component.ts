@@ -22,7 +22,7 @@ export class TeamComponent implements OnInit {
 
   ngOnInit(): void {
     this.team$ = this.route.params.pipe(switchMap(p =>
-      this.firestore.doc(`teams/${p.id}`).valueChanges()
+      this.firestore.doc<Team>(`teams/${p.id}`).valueChanges().pipe(map(t =>({...t, id: p.id})))
     ));
     this.users$ = this.route.params.pipe(switchMap(p =>
       this.firestore.doc<any>(`teams/${p.id}`).valueChanges()

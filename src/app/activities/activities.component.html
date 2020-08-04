@@ -59,9 +59,9 @@
   <ng-container matColumnDef="submit">
     <th mat-header-cell *matHeaderCellDef>Submitted</th>
     <td mat-cell *matCellDef="let element">
-      <button mat-raised-button color="primary" (click)="submit(element.id)" *ngIf="element?.submitted; else submitted">View</button>
+      <button mat-raised-button color="primary" (click)="view(element)" *ngIf="element?.submitted; else submitted">View</button>
       <ng-template #submitted>
-        <button mat-raised-button color="accent" (click)="submit(element.id)">Submit</button>
+        <button mat-raised-button color="accent" (click)="openBottomSheet(element.id)">Submit</button>
       </ng-template>
     </td>
     <td mat-footer-cell *matFooterCellDef>

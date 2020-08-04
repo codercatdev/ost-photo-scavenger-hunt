@@ -43,6 +43,6 @@
     </div>
   </div>
   <div fxFlexFill>
-    <app-activities [team]="team"></app-activities>
+    <app-activities [team]="team" *ngIf="team"></app-activities>
   </div>
 </ng-template>

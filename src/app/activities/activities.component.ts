@@ -1,12 +1,16 @@
+import { ViewComponent } from './view/view.component';
+import { BottomSheetComponent } from './bottom-sheet/bottom-sheet.component';
 import { Team } from './../models/team';
 import { Activity, SubmittedActivity } from './../models/activity';
-import { BehaviorSubject } from 'rxjs';
-import { tap, map } from 'rxjs/operators';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { tap, map, switchMap, filter } from 'rxjs/operators';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { MatSelectChange } from '@angular/material/select';
+import { MatBottomSheet } from '@angular/material/bottom-sheet';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-activities',
@@ -28,7 +32,7 @@ import { MatSelectChange } from '@angular/material/select';
 })
 
 export class ActivitiesComponent implements OnInit {
-  activities$;
+  activities$: Observable<any>;
   dataSource = new MatTableDataSource<Activity>();
   search$ = new BehaviorSubject(null);
   displayedColumns: string[] = ['activity', 'points', 'location', 'submit'];
@@ -36,46 +40,55 @@ export class ActivitiesComponent implements OnInit {
   activityFilter = '';
   pointsFilter = 0;
   locationFilter = '';
-  @ViewChild(MatSort, {static: true}) sort: MatSort;
+  @ViewChild(MatSort, { static: true }) sort: MatSort;
   @Input() team: Team;
 
-  constructor(private firestore: AngularFirestore) { }
+  constructor(private firestore: AngularFirestore, private bottomSheet: MatBottomSheet,
+              public dialog: MatDialog) {}
 
   ngOnInit(): void {
     this.dataSource.sort = this.sort;
-    this.dataSource.filterPredicate = (data, filter) => {
+    this.dataSource.filterPredicate = (data) => {
       return (this.activityFilter ? data.activity.toLowerCase().trim().includes(this.activityFilter.toLowerCase().trim()) : true) &&
-      (this.pointsFilter ? data.points === this.pointsFilter : true) &&
-      (this.locationFilter ? data.location.includes(this.locationFilter) : true)
+        (this.pointsFilter ? data.points === this.pointsFilter : true) &&
+        (this.locationFilter ? data.location.includes(this.locationFilter) : true);
     };
-    this.activities$ = this.firestore.collection<SubmittedActivity>('activities', ref => ref.orderBy('points', 'asc')).snapshotChanges()
-    .pipe(map(actions => actions.map(a => {
-      const data = a.payload.doc.data() as object;
-      const id = a.payload.doc.id;
-      const submitted = this.team.activities[id] ? this.team.activities[id] : null;
-      return { id, ...data, submitted } as SubmittedActivity;
-    })),
-    tap(d => this.dataSource.data = d)
-    );
+    this.activities$ =
+      this.firestore.doc<Team>(`teams/${this.team.id}`).valueChanges().pipe(filter(team => team != null), switchMap(team =>
+        this.firestore.collection<SubmittedActivity>('activities', ref => ref.orderBy('points', 'asc')).snapshotChanges()
+          .pipe(map(actions => actions.map(a => {
+            const data = a.payload.doc.data() as object;
+            const id = a.payload.doc.id;
+            const submitted = team.activities && team.activities[id] ? team.activities[id] : null;
+            return { id, ...data, submitted } as SubmittedActivity;
+          })),
+            tap(d => this.dataSource.data = d)
+          )));
   }
-  applyFilter(event: Event): void{
+  applyFilter(event: Event): void {
     const filterValue = (event.target as HTMLInputElement).value;
     this.activityFilter = filterValue;
     this.setFilter();
   }
-  pointSelect(event: MatSelectChange): void{
+  pointSelect(event: MatSelectChange): void {
     this.pointsFilter = parseInt(event.value);
     this.setFilter();
 
   }
-  locationSelect(event: MatSelectChange): void{
+  locationSelect(event: MatSelectChange): void {
     this.locationFilter = event.value;
     this.setFilter();
   }
-  setFilter(): void{
+  setFilter(): void {
     this.dataSource.filter = 'anything';
   }
-  submit(activityId: string): void{
-    console.log(activityId)
+  openBottomSheet(activityId: string): void {
+    this.bottomSheet.open(BottomSheetComponent, { data: { teamId: this.team.id, activityId } });
+  }
+  view(activity: Activity): void{
+    this.dialog.open(ViewComponent,{
+      width: '80%',
+      data: {activity, team: this.team}
+    });
   }
 }
