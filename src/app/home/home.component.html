@@ -24,12 +24,11 @@
   <mat-tab-group>
     <mat-tab label="My Teams">
       <div fxLayout="row wrap" fxLayoutAlign="center center" *ngIf="myTeams">
-        <mat-card *ngFor="let team of myTeams" style="margin: 10px; cursor: pointer; width: 300px; height: 300px;" [routerLink]="['/team', team.id]"
-          routerLinkActive="router-link-active">
-          <mat-card-title>
+        <mat-card *ngFor="let team of myTeams" fxLayout="column" style="margin: 10px; width: 300px; height: 300px;overflow: hidden;">
+          <mat-card-title [routerLink]="['/team', team.id]" style="cursor: pointer;">
             {{team?.name | titlecase}}
           </mat-card-title>
-          <mat-card-content>
+          <mat-card-content style="overflow-y: auto;">
             <app-team-users [team]="team" fxLayout="column" fxLayoutAlign="stretch"></app-team-users>
           </mat-card-content>
         </mat-card>
@@ -37,12 +36,11 @@
     </mat-tab>
     <mat-tab label="All Teams">
       <div fxLayout="row wrap" fxLayoutAlign="center center" *ngIf="teams">
-        <mat-card *ngFor="let team of teams" style="margin: 10px; cursor: pointer; width: 300px;height: 300px;" [routerLink]="['/team', team.id]"
-          routerLinkActive="router-link-active">
-          <mat-card-title>
+        <mat-card *ngFor="let team of teams" fxLayout="column" style="margin: 10px; width: 300px; height: 300px;overflow: hidden;">
+          <mat-card-title [routerLink]="['/team', team.id]" style="cursor: pointer;">
             {{team?.name | titlecase}}
           </mat-card-title>
-          <mat-card-content>
+          <mat-card-content style="overflow-y: auto;">
             <app-team-users [team]="team"></app-team-users>
           </mat-card-content>
         </mat-card>
