@@ -1,6 +1,6 @@
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { Component, OnInit, ViewChild, ElementRef, Inject } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, Inject, AfterViewInit } from '@angular/core';
 import { AngularFireStorage } from '@angular/fire/storage';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { finalize, take, switchMap } from 'rxjs/operators';
@@ -16,7 +16,7 @@ import * as firebase from 'firebase/app';
     }
   `]
 })
-export class UploadComponent implements OnInit {
+export class UploadComponent implements AfterViewInit {
   @ViewChild('fileInput', { static: false }) fileInput: ElementRef;
   files: FileUpload[] = [];
   uploading$ = new BehaviorSubject(false);
@@ -24,10 +24,14 @@ export class UploadComponent implements OnInit {
       private fireAuth: AngularFireAuth,
               @Inject(MAT_DIALOG_DATA) public data: any, public dialogRef: MatDialogRef<UploadComponent>, ) { }
 
+  ngAfterViewInit(): void{
+    this.onClick();
+  }
+
   onClick(): void {
-    this.uploading$.next(true);
     const fileInput = this.fileInput.nativeElement;
     fileInput.onchange = () => {
+      this.uploading$.next(true);
       for (const file of fileInput.files) {
         const reader = new FileReader();
         reader.readAsDataURL(file);
