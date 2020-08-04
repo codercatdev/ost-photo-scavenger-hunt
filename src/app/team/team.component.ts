@@ -24,34 +24,5 @@ export class TeamComponent implements OnInit {
     this.team$ = this.route.params.pipe(switchMap(p =>
       this.firestore.doc<Team>(`teams/${p.id}`).valueChanges().pipe(map(t =>({...t, id: p.id})))
     ));
-    this.users$ = this.route.params.pipe(switchMap(p =>
-      this.firestore.doc<any>(`teams/${p.id}`).valueChanges()
-        .pipe(filter(team => team.users != null), map(team => team.users.map(uid =>
-          this.firestore.doc(`users/${uid}`).valueChanges()
-        )))
-    ));
-    this.me$ = this.fireAuth.user;
-    this.addMe$ = this.route.params.pipe(switchMap(p =>
-      this.me$.pipe(switchMap(user =>
-        this.firestore.doc<Team>(`teams/${p.id}`).valueChanges().pipe(map(team =>
-          team.users && !team.users.includes(user.uid) ? true : false
-        ))
-      ))));
-  }
-  addUser(): void {
-    this.route.params.pipe(switchMap(p =>
-      this.me$.pipe(switchMap(user =>
-        this.firestore.doc(`teams/${p.id}`).set({ users: firebase.firestore.FieldValue.arrayUnion(user.uid) }, {merge: true})
-      )))).pipe(take(1)).subscribe();
-  }
-  removeUser(): void {
-    this.route.params.pipe(switchMap(p =>
-      this.me$.pipe(switchMap(user =>
-        this.firestore.doc(`teams/${p.id}`).set({ users: firebase.firestore.FieldValue.arrayRemove(user.uid) }, {merge: true})
-      )))).pipe(take(1)).subscribe();
-  }
-  getInitial(displayName: string): string{
-    const initials = displayName.match(/\b\w/g) || [];
-    return ((initials.shift() || '') + (initials.pop() || '')).toUpperCase();
   }
 }

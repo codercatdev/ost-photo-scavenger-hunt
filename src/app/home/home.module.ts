@@ -11,6 +11,7 @@ import { HomeComponent } from './home.component';
 import {MatInputModule} from '@angular/material/input';
 import { ReactiveFormsModule } from '@angular/forms';
 import {MatTabsModule} from '@angular/material/tabs';
+import { TeamModule } from '../team/team.module';
 
 @NgModule({
   declarations: [HomeComponent],
@@ -19,6 +20,7 @@ import {MatTabsModule} from '@angular/material/tabs';
     HomeRoutingModule,
     RouterModule,
     ReactiveFormsModule,
+    TeamModule,
     MatCardModule,
     MatInputModule,
     MatButtonModule,

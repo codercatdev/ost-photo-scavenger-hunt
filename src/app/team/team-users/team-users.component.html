@@ -1,0 +1,39 @@
+<ng-container *ngTemplateOutlet="
+    main;
+    context: {
+      users: users$ | async,
+      addMe: addMe$ | async,
+      me: me$ | async
+    }
+  "></ng-container>
+<ng-template #main let-users="users" let-addMe="addMe" let-me="me">
+    <div *ngFor="let user$ of users" fxLayoutAlign="stretch">
+      <mat-card *ngIf="user$ | async as user" style="margin: 5px; width: 100%;">
+        <mat-card-header>
+          <img [src]="user?.photoURL" mat-card-avatar *ngIf="user?.photoURL; else avatar">
+          <ng-template #avatar>
+            <button disabled="true" mat-fab>{{getInitial(user?.displayName)}}</button>
+          </ng-template>
+          <mat-card-title>{{user?.displayName}}</mat-card-title>
+          <mat-card-subtitle *ngIf="team?.createdBy == me?.uid">Team Captain</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-actions align="end" *ngIf="user.uid === me?.uid && team?.createdBy != me.uid">
+          <button mat-raised-button color="warn" (click)="removeUser()">Remove Me</button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+    <div *ngIf="addMe" fxLayoutAlign="stretch">
+      <mat-card style="margin: 5px; width: 100%;">
+        <mat-card-header>
+          <img [src]="me?.photoURL" mat-card-avatar *ngIf="me?.photoURL; else avatar">
+          <ng-template #avatar>
+            <button disabled="true" mat-fab>{{getInitial(me?.displayName)}}</button>
+          </ng-template>
+          <mat-card-title>{{me?.displayName}}</mat-card-title>
+        </mat-card-header>
+        <mat-card-actions align="end">
+          <button mat-raised-button color="accent" (click)="addUser()">Add Me</button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+</ng-template>

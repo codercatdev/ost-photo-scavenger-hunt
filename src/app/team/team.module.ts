@@ -9,10 +9,11 @@ import { CommonModule } from '@angular/common';
 
 import { TeamRoutingModule } from './team-routing.module';
 import { TeamComponent } from './team.component';
+import { TeamUsersComponent } from './team-users/team-users.component';
 
 
 @NgModule({
-  declarations: [TeamComponent],
+  declarations: [TeamComponent, TeamUsersComponent],
   imports: [
     CommonModule,
     TeamRoutingModule,
@@ -22,6 +23,7 @@ import { TeamComponent } from './team.component';
     MatCardModule,
     MatButtonModule,
     FlexLayoutModule
-  ]
+  ],
+  exports: [TeamUsersComponent]
 })
 export class TeamModule { }
