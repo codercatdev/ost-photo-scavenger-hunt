@@ -10,6 +10,7 @@ import { HomeComponent } from './home.component';
 
 import {MatInputModule} from '@angular/material/input';
 import { ReactiveFormsModule } from '@angular/forms';
+import {MatTabsModule} from '@angular/material/tabs';
 
 @NgModule({
   declarations: [HomeComponent],
@@ -22,6 +23,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     MatInputModule,
     MatButtonModule,
     FlexLayoutModule,
+    MatTabsModule
   ]
 })
 export class HomeModule { }
