@@ -1,3 +1,4 @@
+import { UploadComponent } from './upload/upload.component';
 import { ViewComponent } from './view/view.component';
 import { BottomSheetComponent } from './bottom-sheet/bottom-sheet.component';
 import { Team } from './../models/team';
@@ -84,6 +85,12 @@ export class ActivitiesComponent implements OnInit {
   }
   openBottomSheet(activityId: string): void {
     this.bottomSheet.open(BottomSheetComponent, { data: { teamId: this.team.id, activityId } });
+  }
+  openUploadDialog(activityId: string): void {
+    const dialogRef = this.dialog.open(UploadComponent, {
+      width: '80%',
+      data: { teamId: this.team.id, activityId }
+    });
   }
   view(activity: Activity): void{
     this.dialog.open(ViewComponent,{

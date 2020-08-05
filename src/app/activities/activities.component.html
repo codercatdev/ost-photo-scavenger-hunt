@@ -61,7 +61,7 @@
     <td mat-cell *matCellDef="let element">
       <button mat-raised-button color="primary" (click)="view(element)" *ngIf="element?.submitted; else submitted">View</button>
       <ng-template #submitted>
-        <button mat-raised-button color="accent" (click)="openBottomSheet(element.id)">Submit</button>
+        <button mat-raised-button color="accent" (click)="openUploadDialog(element.id)">Submit</button>
       </ng-template>
     </td>
     <td mat-footer-cell *matFooterCellDef>
