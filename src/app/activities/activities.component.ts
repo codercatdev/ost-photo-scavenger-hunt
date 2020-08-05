@@ -22,7 +22,7 @@ import {MediaObserver} from '@angular/flex-layout';
     width: 100%;
   }
   th {
-    position: sticky;
+    position: sticky; position: webkit-sticky;
     top: 64px;
     z-index: 100;
     background: #7b1fa2;

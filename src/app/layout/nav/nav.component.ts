@@ -22,9 +22,9 @@ import { Router } from '@angular/router';
     }
 
     .mat-toolbar.mat-primary {
-      position: sticky;
+      position: sticky; position: webkit-sticky;
       top: 0;
-      z-index: 1;
+      z-index: 100;
     }
     .router-link-active, .router-link-active:focus{
       background: gray
