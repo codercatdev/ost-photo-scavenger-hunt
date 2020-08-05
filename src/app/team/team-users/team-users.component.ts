@@ -23,9 +23,15 @@ export class TeamUsersComponent implements OnInit {
   ngOnInit(): void {
     this.users$ =
       this.firestore.doc<any>(`teams/${this.team.id}`).valueChanges()
-        .pipe(filter(team => team.users != null), map(team => team.users.map(uid =>
-          this.firestore.doc(`users/${uid}`).valueChanges()
-        )));
+        .pipe(
+          filter(team => team.users != null),
+          map(team => {
+            team.users = [...team.users.splice(team.users.indexOf(team.createdBy)), ...team.users];
+            return team.users.map(uid =>
+              this.firestore.doc(`users/${uid}`).valueChanges()
+            );
+          })
+        );
     this.me$ = this.fireAuth.user;
     this.addMe$ = this.me$.pipe(switchMap(user =>
       this.firestore.doc<Team>(`teams/${this.team.id}`).valueChanges().pipe(map(team =>

@@ -15,7 +15,7 @@
             <button disabled="true" mat-fab>{{getInitial(user?.displayName)}}</button>
           </ng-template>
           <mat-card-title>{{user?.displayName}}</mat-card-title>
-          <mat-card-subtitle *ngIf="team?.createdBy == me?.uid">Team Captain</mat-card-subtitle>
+          <mat-card-subtitle *ngIf="team?.createdBy == user?.uid">Team Captain</mat-card-subtitle>
         </mat-card-header>
         <mat-card-actions align="end" *ngIf="user.uid === me?.uid && team?.createdBy != me.uid">
           <button mat-raised-button color="warn" (click)="removeUser()">Remove Me</button>
