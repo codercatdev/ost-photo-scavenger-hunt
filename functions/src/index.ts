@@ -9,3 +9,7 @@ export {
 export {
   teamsWrite
 } from './points/points';
+
+export {
+  generateResizedImage
+} from './images/upload';
