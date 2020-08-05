@@ -2,7 +2,11 @@ import * as admin from 'firebase-admin';
 import * as functions from 'firebase-functions';
 
 const activities =
-[
+[  {
+    "points": 10,
+    "location": ["Grand Rapids", "Detroit", "Minneapolis"],
+    "activity": "Eat out at a local favorite food spot"
+  },
   {
     "points": 10,
     "location": ["Grand Rapids", "Detroit", "Minneapolis"],
