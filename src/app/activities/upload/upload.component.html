@@ -7,13 +7,15 @@
   "
 ></ng-container>
 <ng-template #main let-uploading="uploading">
-<div fxLayout="row wrap" fxLayoutAlign="center">
-  <mat-card fxFlex="50" *ngFor="let file of files">
-    <img mat-card-image [src]="file?.imgURL">
+<div fxLayout="row wrap" fxLayoutAlign="center center" style="height:100%;width: 100%;">
+  <mat-card fxFlex="auto" *ngFor="let file of files">
+    <img mat-card-image [src]="file?.imgURL"
+    style="display:block;height:auto;width:auto;max-width:100%;max-height:50vh;">
+
     <mat-card-content>
       <mat-progress-bar [value]="file?.data?.progress | async" *ngIf="file?.data?.inProgress"></mat-progress-bar>
       <div *ngIf="file?.data?.downloadURL | async as downloadURL; else showFileName">
-        <a [href]="downloadURL" target="_blank">{{downloadURL}}</a>
+        <a [href]="downloadURL" target="_blank">Link</a>
       </div>
       <ng-template #showFileName>
       <span id="file-label">

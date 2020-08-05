@@ -96,13 +96,13 @@ export class ActivitiesComponent implements OnInit {
   }
   openUploadDialog(activityId: string): void {
     const dialogRef = this.dialog.open(UploadComponent, {
-      width: '80%',
+      height: '90vh',
       data: { teamId: this.team.id, activityId }
     });
   }
   view(activity: Activity): void{
     this.dialog.open(ViewComponent,{
-      width: '80%',
+      height: '90vh',
       data: {activity, team: this.team}
     });
   }

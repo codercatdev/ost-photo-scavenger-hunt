@@ -21,10 +21,10 @@ export class UploadComponent implements AfterViewInit {
   files: FileUpload[] = [];
   uploading$ = new BehaviorSubject(false);
   constructor(private firestore: AngularFirestore, private fireStorage: AngularFireStorage,
-      private fireAuth: AngularFireAuth,
-              @Inject(MAT_DIALOG_DATA) public data: any, public dialogRef: MatDialogRef<UploadComponent>, ) { }
+    private fireAuth: AngularFireAuth,
+    @Inject(MAT_DIALOG_DATA) public data: any, public dialogRef: MatDialogRef<UploadComponent>,) { }
 
-  ngAfterViewInit(): void{
+  ngAfterViewInit(): void {
     this.onClick();
   }
 
@@ -59,7 +59,7 @@ export class UploadComponent implements AfterViewInit {
           take(1)).subscribe(downloadURL => {
             this.fireAuth.user.pipe(take(1)).subscribe(user => {
               const activities = {
-                [this.data.activityId] : {
+                [this.data.activityId]: {
                   downloadURL,
                   uid: user.uid,
                   submitted: firebase.firestore.FieldValue.serverTimestamp()
@@ -67,12 +67,12 @@ export class UploadComponent implements AfterViewInit {
               };
               this.firestore.doc(`teams/${this.data.teamId}`).set({
                 activities
-              }, {merge: true});
+              }, { merge: true });
             });
           });
-        })).subscribe();
+      })).subscribe();
   }
-  close(): void{
+  close(): void {
     this.dialogRef.close();
   }
 }

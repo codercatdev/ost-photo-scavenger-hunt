@@ -1,15 +1,16 @@
-<div fxLayout="row wrap" fxLayoutAlign="center">
-  <mat-card fxFlex="50">
-    <img mat-card-image [src]="data?.activity?.submitted?.downloadURL" style="max-width: 100%;">
-    <a [href]="data?.activity?.submitted?.downloadURL" target="_blank">Photo Link</a>
+<div fxLayout="row wrap" fxLayoutAlign="center center" style="height:100%;width: 100%;">
+  <mat-card fxFlex="auto">
+    <img mat-card-image [src]="data?.activity?.submitted?.downloadURL"
+    style="display:block;height:auto;width:auto;max-width:100%;max-height:50vh;">
+    <a [href]="data?.activity?.submitted?.downloadURL" target="_blank">Link</a>
 
     <mat-card-title-group>
-    <mat-card-title>
-      {{data?.activity?.activity}}
-    </mat-card-title>
-    <mat-card-subtitle>
-      Points: {{data?.activity?.points}}
-    </mat-card-subtitle>
+      <mat-card-title>
+        {{data?.activity?.activity}}
+      </mat-card-title>
+      <mat-card-subtitle>
+        Points: {{data?.activity?.points}}
+      </mat-card-subtitle>
     </mat-card-title-group>
     <mat-card-content>
     </mat-card-content>
