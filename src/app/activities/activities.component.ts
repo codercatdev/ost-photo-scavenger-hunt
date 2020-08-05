@@ -38,6 +38,7 @@ export class ActivitiesComponent implements OnInit {
   dataSource = new MatTableDataSource<Activity>();
   search$ = new BehaviorSubject(null);
   displayedColumns$: Observable<string[]>;
+  header$: Observable<string[]>;
 
   activityFilter = '';
   pointsFilter = 0;
