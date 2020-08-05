@@ -55,8 +55,6 @@ export class ActivitiesComponent implements OnInit {
       ['activity', 'points', 'location', 'submit']
     ));
 
-    this.displayedColumns$.subscribe(c => console.log(c))
-
     this.dataSource.sort = this.sort;
     this.dataSource.filterPredicate = (data) => {
       return (this.activityFilter ? data.activity.toLowerCase().trim().includes(this.activityFilter.toLowerCase().trim()) : true) &&
