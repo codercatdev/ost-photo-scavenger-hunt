@@ -2,11 +2,12 @@
   *ngTemplateOutlet="
     main;
     context: {
-      activities: activities$ | async
+      activities: activities$ | async,
+      displayedColumns: displayedColumns$ | async
     }
   "
 ></ng-container>
-<ng-template #main let-activities="activities">
+<ng-template #main let-activities="activities" let-displayedColumns="displayedColumns">
 <table mat-table [dataSource]="dataSource" matSort>
 
   <ng-container matColumnDef="activity">
