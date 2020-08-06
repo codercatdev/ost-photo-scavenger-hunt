@@ -1,76 +1,84 @@
-<ng-container
-  *ngTemplateOutlet="
+<ng-container *ngTemplateOutlet="
     main;
     context: {
       activities: activities$ | async,
       displayedColumns: displayedColumns$ | async
     }
-  "
-></ng-container>
+  "></ng-container>
 <ng-template #main let-activities="activities" let-displayedColumns="displayedColumns">
-<table mat-table [dataSource]="dataSource" matSort>
+  <table mat-table [dataSource]="dataSource" matSort>
 
-  <ng-container matColumnDef="activity">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header> Activity </th>
-    <td mat-cell *matCellDef="let element"> {{element.activity}} </td>
-    <td mat-footer-cell *matFooterCellDef>
-      <mat-form-field style="width: 100%;">
-        <mat-label>Filter</mat-label>
-        <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Mia" #input>
-      </mat-form-field>
-    </td>
-  </ng-container>
+    <ng-container matColumnDef="activity">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Activity </th>
+      <td mat-cell *matCellDef="let element"> {{element.activity}} </td>
+      <td mat-footer-cell *matFooterCellDef>
+        <span>{{dataSource.filteredData.length}}/{{dataSource.data.length}}</span>
+        <mat-form-field style="width: 100%;">
+          <mat-label>Filter</mat-label>
+          <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Mia" #input>
+        </mat-form-field>
+      </td>
+    </ng-container>
 
-  <ng-container matColumnDef="points">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header> Points </th>
-    <td mat-cell *matCellDef="let element"> {{element.points}} </td>
-    <td mat-footer-cell *matFooterCellDef>
-      <mat-form-field appearance="fill">
-        <mat-label>Points</mat-label>
-        <mat-select (selectionChange)="pointSelect($event)">
-          <mat-option *ngFor="let point of ['', '1', '5', '10']" [value]="point">
-            {{point}}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-    </td>
-  </ng-container>
+    <ng-container matColumnDef="points">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Points </th>
+      <td mat-cell *matCellDef="let element"> {{element.points}} </td>
+      <td mat-footer-cell *matFooterCellDef>
+        <mat-form-field appearance="fill">
+          <mat-label>Points</mat-label>
+          <mat-select (selectionChange)="pointSelect($event)">
+            <mat-option *ngFor="let point of ['', '1', '5', '10']" [value]="point">
+              {{point}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </td>
+    </ng-container>
 
-  <ng-container matColumnDef="location">
-    <th mat-header-cell *matHeaderCellDef> Location </th>
-    <td mat-cell *matCellDef="let element">
-      <mat-chip-list>
-      <mat-chip *ngFor="let l of element.location">
-        {{l}}
-      </mat-chip>
-      </mat-chip-list>
-    </td>
-    <td mat-footer-cell *matFooterCellDef>
-      <mat-form-field appearance="fill">
-        <mat-label>Location</mat-label>
-        <mat-select (selectionChange)="locationSelect($event)">
-          <mat-option *ngFor="let location of ['', 'Grand Rapids', 'Detroit', 'Minneapolis']" [value]="location">
-            {{location}}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-    </td>
-  </ng-container>
+    <ng-container matColumnDef="location">
+      <th mat-header-cell *matHeaderCellDef> Location </th>
+      <td mat-cell *matCellDef="let element">
+        <mat-chip-list>
+          <mat-chip *ngFor="let l of element.location">
+            {{l}}
+          </mat-chip>
+        </mat-chip-list>
+      </td>
+      <td mat-footer-cell *matFooterCellDef>
+        <mat-form-field appearance="fill">
+          <mat-label>Location</mat-label>
+          <mat-select (selectionChange)="locationSelect($event)">
+            <mat-option *ngFor="let location of ['', 'Grand Rapids', 'Detroit', 'Minneapolis']" [value]="location">
+              {{location}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </td>
+    </ng-container>
 
-  <ng-container matColumnDef="submit">
-    <th mat-header-cell *matHeaderCellDef>Submitted</th>
-    <td mat-cell *matCellDef="let element">
-      <button mat-raised-button color="primary" (click)="view(element)" *ngIf="element?.submitted; else submitted">View</button>
-      <ng-template #submitted>
-        <button mat-raised-button color="accent" (click)="openUploadDialog(element.id)">Submit</button>
-      </ng-template>
-    </td>
-    <td mat-footer-cell *matFooterCellDef>
-    </td>
-  </ng-container>
+    <ng-container matColumnDef="submit">
+      <th mat-header-cell *matHeaderCellDef>Submitted</th>
+      <td mat-cell *matCellDef="let element">
+        <button mat-raised-button color="primary" (click)="view(element)"
+          *ngIf="element?.submitted; else submitted">View</button>
+        <ng-template #submitted>
+          <button mat-raised-button color="accent" (click)="openUploadDialog(element.id)">Submit</button>
+        </ng-template>
+      </td>
+      <td mat-footer-cell *matFooterCellDef>
+        <mat-form-field appearance="fill">
+          <mat-label>Submitted</mat-label>
+          <mat-select (selectionChange)="submittedSelect($event)">
+            <mat-option *ngFor="let submitted of ['', 'Submitted', 'Not']" [value]="submitted">
+              {{submitted}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </td>
+    </ng-container>
 
-  <tr mat-header-row *matHeaderRowDef="displayedColumns" [ngStyle.lt-md]="{'display': 'none'}"></tr>
-  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-  <tr mat-footer-row *matFooterRowDef="displayedColumns; sticky: true"></tr>
-</table>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns" [ngStyle.lt-md]="{'display': 'none'}"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    <tr mat-footer-row *matFooterRowDef="displayedColumns; sticky: true"></tr>
+  </table>
 </ng-template>

@@ -12,7 +12,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatSelectChange } from '@angular/material/select';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { MatDialog } from '@angular/material/dialog';
-import {MediaObserver} from '@angular/flex-layout';
+import { MediaObserver } from '@angular/flex-layout';
 
 @Component({
   selector: 'app-activities',
@@ -35,7 +35,7 @@ import {MediaObserver} from '@angular/flex-layout';
 
 export class ActivitiesComponent implements OnInit {
   activities$: Observable<any>;
-  dataSource = new MatTableDataSource<Activity>();
+  dataSource = new MatTableDataSource<SubmittedActivity>();
   search$ = new BehaviorSubject(null);
   displayedColumns$: Observable<string[]>;
   header$: Observable<string[]>;
@@ -43,24 +43,30 @@ export class ActivitiesComponent implements OnInit {
   activityFilter = '';
   pointsFilter = 0;
   locationFilter = '';
+  submittedFilter = '';
+
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   @Input() team: Team;
 
   constructor(private firestore: AngularFirestore, private bottomSheet: MatBottomSheet,
-              public dialog: MatDialog, public mediaObserver: MediaObserver) {}
+    public dialog: MatDialog, public mediaObserver: MediaObserver) { }
 
   ngOnInit(): void {
     this.displayedColumns$ = this.mediaObserver.asObservable().pipe(map(media =>
       media.find(m => ['sm', 'xs'].some(v => v === m.mqAlias)) ?
-      ['activity', 'submit'] :
-      ['activity', 'points', 'location', 'submit']
+        ['activity', 'submit'] :
+        ['activity', 'points', 'location', 'submit']
     ));
 
     this.dataSource.sort = this.sort;
     this.dataSource.filterPredicate = (data) => {
       return (this.activityFilter ? data.activity.toLowerCase().trim().includes(this.activityFilter.toLowerCase().trim()) : true) &&
         (this.pointsFilter ? data.points === this.pointsFilter : true) &&
-        (this.locationFilter ? data.location.includes(this.locationFilter) : true);
+        (this.locationFilter ? data.location.includes(this.locationFilter) : true) &&
+        (
+          this.submittedFilter.includes('Submitted') ? data.submitted != null :
+          this.submittedFilter.includes('Not') ? data.submitted == null : true
+        );
     };
     this.activities$ =
       this.firestore.doc<Team>(`teams/${this.team.id}`).valueChanges().pipe(filter(team => team != null), switchMap(team =>
@@ -88,6 +94,10 @@ export class ActivitiesComponent implements OnInit {
     this.locationFilter = event.value;
     this.setFilter();
   }
+  submittedSelect(event: MatSelectChange): void {
+    this.submittedFilter = event.value;
+    this.setFilter();
+  }
   setFilter(): void {
     this.dataSource.filter = 'anything';
   }
@@ -100,10 +110,10 @@ export class ActivitiesComponent implements OnInit {
       data: { teamId: this.team.id, activityId }
     });
   }
-  view(activity: Activity): void{
-    this.dialog.open(ViewComponent,{
+  view(activity: Activity): void {
+    this.dialog.open(ViewComponent, {
       height: '90vh',
-      data: {activity, team: this.team}
+      data: { activity, team: this.team }
     });
   }
 }
