@@ -6,6 +6,7 @@ import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AngularFireAuth } from '@angular/fire/auth';
 import * as firebase from 'firebase/app';
+import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 
 @Component({
   selector: 'app-team',
@@ -24,5 +25,10 @@ export class TeamComponent implements OnInit {
     this.team$ = this.route.params.pipe(switchMap(p =>
       this.firestore.doc<Team>(`teams/${p.id}`).valueChanges().pipe(map(t =>({...t, id: p.id})))
     ));
+  }
+  updateSlack(e: MatSlideToggleChange): void{
+    this.team$.pipe(take(1),map(team =>
+      this.firestore.doc(`teams/${team.id}`).set({slack: e.checked}, {merge: true})
+    )).subscribe();
   }
 }

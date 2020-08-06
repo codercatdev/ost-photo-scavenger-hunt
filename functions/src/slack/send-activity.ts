@@ -11,6 +11,10 @@ export const sendActivity = functions.firestore.document('teams/{teamId}').onWri
   const newActivities = change.after.data()?.activities
   const oldActivities = change.before.data()?.activities;
 
+  if(!change.before.data()?.slack){
+    return false;
+  }
+
   if (newActivities) {
     // Get All activities that the team has submitted
     for (const [newKey, a] of Object.entries(newActivities) as any) {
@@ -30,6 +34,7 @@ export const sendActivity = functions.firestore.document('teams/{teamId}').onWri
       }
     }
   }
+  return true;
 });
 
 async function slackWebApi(id:string, name:string, points: number, activity: string, url: string) {

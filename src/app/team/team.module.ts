@@ -10,6 +10,7 @@ import { CommonModule } from '@angular/common';
 import { TeamRoutingModule } from './team-routing.module';
 import { TeamComponent } from './team.component';
 import { TeamUsersComponent } from './team-users/team-users.component';
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 
 
 @NgModule({
@@ -22,7 +23,8 @@ import { TeamUsersComponent } from './team-users/team-users.component';
     ActivitiesModule,
     MatCardModule,
     MatButtonModule,
-    FlexLayoutModule
+    FlexLayoutModule,
+    MatSlideToggleModule
   ],
   exports: [TeamUsersComponent]
 })
