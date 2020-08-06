@@ -5,71 +5,80 @@ import fetch from 'node-fetch';
 
 const slackWebhook = functions.config().slack.webhook;
 
-export const teamsWrite = functions.firestore.document('teams/{teamId}').onWrite(async (change, context) => {
-  const { activities } = change.after.data() as any;
-  if (activities) {
-    // // Get All activities that the team has submitted
-    const promises: Promise<FirebaseFirestore.DocumentSnapshot<FirebaseFirestore.DocumentData>>[] = [];
-    Object.keys(activities).forEach(activity => {
-      promises.push(admin.firestore().doc(`activities/${activity}`).get());
-    });
-    // const fullActivities = await Promise.all(promises);
+export const sendActivity = functions.firestore.document('teams/{teamId}').onWrite(async (change, context) => {
+  const id = context.params.teamId;
+  const name = change.after.data()?.name;
+  const newActivities = change.after.data()?.activities
+  const oldActivities = change.before.data()?.activities;
 
-    // // Add Points
-    // let totalPoints = 0;
-    // fullActivities.forEach(activity => {
-    //   const { points } = activity.data() as any;
-    //   totalPoints = totalPoints + points;
-    // });
-
-    // // Update team points
-    // const ref = `teams/${context.params.teamId}`;
-    // console.log(`Updating ${ref} with ${totalPoints}`);
-    // return admin.firestore().doc(ref).set({totalPoints}, {merge: true});
-
-
-    // Send resized link to slack
-    const body = {
-      "text": "Points: 10",
-      "blocks": [
-        {
-          "type": "header",
-          "text": {
-            "type": "plain_text",
-            "text": "Budget Performance"
+  if (newActivities) {
+    // Get All activities that the team has submitted
+    for (const [newKey, a] of Object.entries(newActivities) as any) {
+      // Check to see if resizeURL exists
+      if (Object.keys(a).includes('resizeURL')) {
+        //Find old entry
+        for (const [oldKey, b] of Object.entries(oldActivities) as any) {
+          if (newKey === oldKey) {
+            // Make sure old key does not have a resize
+            if (!Object.keys(b).includes('resizeURL')) {
+              const activity = await admin.firestore().doc(`activities/${newKey}`).get();
+              const data = activity.data() as { activity: string, points: number };
+              await slackWebApi(id, name, data.points, data.activity, a.resizeURL);
+            }
           }
-        },
-        {
-          "type": "divider"
-        },
-        {
-          "type": "section",
-          "text": {
-            "type": "mrkdwn",
-            "text": "_Points_:*10*"
-          }
-        },
-        {
-          "type": "image",
-          "title": {
-            "type": "plain_text",
-            "text": "Points 10"
-          },
-          "block_id": "image4",
-          "image_url": "https://firebasestorage.googleapis.com/v0/b/ost-photo-scavenger-hunt.appspot.com/o/hXiM2ACHU0LpMZ4uMN6O%2F0ssEoXkLh2PDSdgFJ1y3?alt=media&token=98e27a6f-ef74-40de-9694-0e37e28bfc5b",
-          "alt_text": "An incredibly cute kitten."
         }
-      ]
+      }
     }
-    await fetch(slackWebhook, {
-      method: 'post',
-      body: JSON.stringify(body),
-      headers: { 'Content-Type': 'application/json' },
-    })
-
-    return true
-  } else {
-    return false;
   }
 });
 
+async function slackWebApi(id:string, name:string, points: number, activity: string, url: string) {
+  // Send resized link to slack
+  const body = {
+    "text": `Points ${points}`,
+    "blocks": [
+      {
+        "type": "header",
+        "text": {
+          "type": "plain_text",
+          "text": activity
+        }
+      },
+      {
+        "type": "divider"
+      },
+      {
+        "type": "section",
+        "text": {
+          "type": "mrkdwn",
+          "text": `_Points_:*${points}*`
+        }
+      },
+      {
+        "type": "section",
+        "text": {
+          "type": "mrkdwn",
+          "text": `<https://ost-photo-scavenger-hunt.web.app/team/${id}|${name}>`
+        }
+      },
+      {
+        "type": "image",
+        "title": {
+          "type": "plain_text",
+          "text": activity
+        },
+        "block_id": "image4",
+        "image_url": url,
+        "alt_text": activity
+      }
+    ]
+  }
+  const response: any = await fetch(slackWebhook, {
+    method: 'post',
+    body: JSON.stringify(body),
+    headers: { 'Content-Type': 'application/json' },
+  })
+  if (response.Response.error) {
+    console.log(response.Response.error);
+  }
+}

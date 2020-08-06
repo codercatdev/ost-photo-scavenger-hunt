@@ -13,3 +13,7 @@ export {
 export {
   generateResizedImage
 } from './images/upload';
+
+export {
+  sendActivity
+} from './slack/send-activity'

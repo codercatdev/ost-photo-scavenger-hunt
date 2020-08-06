@@ -62,3 +62,4 @@ amplify-gradle-config.json
 amplifytools.xcconfig
 .firebase/*
 *.log
+functions/.runtimeconfig.json
