@@ -6,9 +6,9 @@
   "></ng-container>
 <ng-template #main let-team="team" let-users="users" let-addMe="addMe" let-me="me">
   <mat-toolbar fxLayout="row" fxLayoutAlign="space-between">
-    <h1>Team Name: {{team?.name}}</h1>
+    <h1>{{team?.name}}</h1>
     <h2>Points: {{team?.totalPoints || 0}}</h2>
-    <div><mat-slide-toggle [checked]="team?.slack" (change)="updateSlack($event)">Slack Trigger</mat-slide-toggle></div>
+    <div><mat-slide-toggle [checked]="team?.slack" (change)="updateSlack($event)">Slack</mat-slide-toggle></div>
   </mat-toolbar>
   <div *ngIf="team">
     <app-team-users [team]="team" fxLayout="row wrap"></app-team-users>
