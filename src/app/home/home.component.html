@@ -45,6 +45,9 @@
           <mat-card-title [routerLink]="['/team', team.id]" style="cursor: pointer;">
             {{team?.name}}
           </mat-card-title>
+          <mat-card-subtitle *ngIf="team?.totalPoints">
+            Points: {{team?.totalPoints}}
+          </mat-card-subtitle>
           <mat-card-content style="overflow-y: auto;">
             <app-team-users [team]="team"></app-team-users>
           </mat-card-content>
